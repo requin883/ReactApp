@@ -13,18 +13,26 @@ function Square(props) {
 
 function Board(){
   const [squares,setSquare] = useState(Array(9));
+  const [xIsNext,setXIsNext] = useState(true);
+  const winner = calculateWinner(squares);
+  let status;
+  if(winner){
+    status= `The winner is ${winner}`;
+  }else{
+    status = `Next player is : ${xIsNext?"X":"O"}`
+  }
   function handleClick(i) {
-    console.log(squares);
-    const newSquares = squares.slice();
-    newSquares[i] = "X";
+    const newSquares = [...squares];
+    if(calculateWinner(squares) ||newSquares[i]){
+    return;
+    }
+    newSquares[i] = xIsNext?"X":"O";
+    setXIsNext(!xIsNext);
     setSquare(newSquares);
   }
   function renderSquare(i) {
     return <Square value={squares[i]} onClick={() => handleClick(i)} />;
   }
-
-    const status = 'Next player: X';
-
     return (
       <div>
         <div className="status">{status}</div>
@@ -63,6 +71,25 @@ function Game() {
   );
 }
 
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
 // ========================================
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
