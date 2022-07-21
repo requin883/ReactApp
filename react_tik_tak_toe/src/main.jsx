@@ -1,48 +1,55 @@
-import React from "react";
+import React, { StrictMode, useState } from "react";
 import ReactDOM from "react-dom/client";
 import './index.css';
 import './App.css';
-function Square(props){
-    return (
-      <button className="square" onClick={()=>console.log('click')}>
-        {props.value}
-      </button>
-    );
+function Square(props) {
+  return (
+    <button className="square"
+      onClick={() => props.onClick('X')}>
+      {props.value}
+    </button>
+  );
 }
 
-class Board extends React.Component {
-  renderSquare(i) {
-    return <Square value={i}/>;
+function Board(){
+  const [squares,setSquare] = useState(Array(9));
+  function handleClick(i) {
+    console.log(squares);
+    const newSquares = squares.slice();
+    newSquares[i] = "X";
+    setSquare(newSquares);
+  }
+  function renderSquare(i) {
+    return <Square value={squares[i]} onClick={() => handleClick(i)} />;
   }
 
-  render() {
     const status = 'Next player: X';
 
     return (
       <div>
         <div className="status">{status}</div>
         <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
+          {renderSquare(0)}
+          {renderSquare(1)}
+          {renderSquare(2)}
         </div>
         <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
+          {renderSquare(3)}
+          {renderSquare(4)}
+          {renderSquare(5)}
         </div>
         <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
+          {renderSquare(6)}
+          {renderSquare(7)}
+          {renderSquare(8)}
         </div>
       </div>
     );
-  }
 }
 
-function Game(){
-    return (
+function Game() {
+  return (
+    <StrictMode>
       <div className="game">
         <div className="game-board">
           <Board />
@@ -52,7 +59,8 @@ function Game(){
           <ol>{/* TODO */}</ol>
         </div>
       </div>
-    );
+    </StrictMode>
+  );
 }
 
 // ========================================
