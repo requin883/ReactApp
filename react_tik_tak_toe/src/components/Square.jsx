@@ -1,4 +1,4 @@
-export default function Square(props) {
+function Square(props) {
     return (
       <button className="square"
         onClick={() => props.onClick('X')}>
@@ -6,3 +6,5 @@ export default function Square(props) {
       </button>
     );
   }
+
+  export default Square;
